@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% if formInfoPari is defined %}
+        <p> vous voulez parier sur le match {{ match.equipe1 }} VS {{ match.equipe2 }} 
+        {% if error is defined and error is not null %}
+            <span style="color : red;">{{ error }}</span>
+        {% endif %}
+        </p>
+            {{ form_start(formInfoPari) }}
+            {{ form_row(formInfoPari.verdict, {'attr':{
+                'label' : 'verdict du match:' 
+            }})}}
+
+             {{ form_row(formInfoPari.montant, {'attr':{
+                'label' : 'montant:', 'required' : 'required'
+            }})}}
+             <input type = "submit" name="parier" value="parier" class="btn btn-success">
+            {{ form_end(formInfoPari) }}
+            
+    {% elseif matchs is null %}
+     <p> Aucun Match Ouverts Pour le Moment</p>
+    {% else %}
+        {% if success is defined and success is not null %}
+            <p style="color : green;">{{ success }}</p>
+        {% endif %}
+        <table class="table table-striped table-hover ">
+        <caption> Paris Ouverts </caption>
+        <tr class="warning">
+            <th> Sport </th> <th> Equipe 1 </th> <th>  </th> <th> Equipe 2 </th> <th> Date du Match </th> <th></th>
+        </tr>
+            <caption> Paris Ouverts</caption>
+            {% for match in matchs %}
+                <tr class="warning">
+                    <td> {{ match.sport }} </td>
+                    <td> {{ match.equipe1 }} </td>
+                    <td> VS </td>
+                    <td> {{ match.equipe2 }} </td>
+                    <td> {{ match.quand | date('d/m/Y \\â H:i') }} </td>
+                    <td> <a href="{{ path('parier', {'id': match.id }) }}"> parier pour ce match </a>  </td>
+                 </tr>
+            {% endfor %}
+        </table>
+          <p><a href="/user/menu">Retour au Menu</a></p>
+    {% endif %}
+
+{% endblock %}

@@ -6,6 +6,7 @@
 /public/bundles/
 /var/
 /vendor/
+/src/Entity/InfoPari
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###

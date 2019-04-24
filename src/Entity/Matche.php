@@ -7,9 +7,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\MatchRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\MatcheRepository")
  */
-class Match
+class Matche
 {
     /**
      * @ORM\Id()
@@ -39,12 +39,12 @@ class Match
     private $quand;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $resultat;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Pari", mappedBy="matsh")
+     * @ORM\OneToMany(targetEntity="App\Entity\Pari", mappedBy="matche")
      */
     private $paris;
 
@@ -111,7 +111,7 @@ class Match
         return $this->resultat;
     }
 
-    public function setResultat(string $resultat): self
+    public function setResultat(?string $resultat): self
     {
         $this->resultat = $resultat;
 
@@ -130,7 +130,7 @@ class Match
     {
         if (!$this->paris->contains($pari)) {
             $this->paris[] = $pari;
-            $pari->setMatsh($this);
+            $pari->setMatche($this);
         }
 
         return $this;
@@ -141,8 +141,8 @@ class Match
         if ($this->paris->contains($pari)) {
             $this->paris->removeElement($pari);
             // set the owning side to null (unless already changed)
-            if ($pari->getMatsh() === $this) {
-                $pari->setMatsh(null);
+            if ($pari->getMatche() === $this) {
+                $pari->setMatche(null);
             }
         }
 

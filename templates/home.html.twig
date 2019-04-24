@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% form_theme formulaire 'bootstrap_4_layout.html.twig' %}
+{% block title %}page d'accueil!{% endblock %}
+
+{% block body %}
+    {% if error is defined and error is not null %}
+        <p style="background: red;"> {{ error }} </p>
+    {% endif %}
+    {{ form_start(formulaire) }}
+     {{ form_row(formulaire.login, {'attr':{'label': "login"}}) }}
+     {{ form_row(formulaire.password, {'attr':{'label': "password"}}) }}
+     <input type="submit" value="connexion">
+    {{ form_end(formulaire) }}
+{% endblock %}

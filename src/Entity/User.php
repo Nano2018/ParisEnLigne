@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -12,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class User
 {
     /**
+     * 
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -19,7 +21,13 @@ class User
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     *  @ORM\Column(type="string", length=255)
+     *  @Assert\Length(
+     *      min = 4,
+     *      max = 15,
+     *      minMessage = "le login est trop court {{ limit }} carcatere",
+     *      maxMessage = "le login est trop long!!"
+     * )
      */
     private $login;
 

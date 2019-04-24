@@ -22,10 +22,9 @@ class Pari
     private $parieur;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Match", inversedBy="paris")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Matche", inversedBy="paris")
      */
-    private $matsh;
+    private $matche;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -59,14 +58,14 @@ class Pari
         return $this;
     }
 
-    public function getMatsh(): ?Match
+    public function getMatche(): ?Matche
     {
-        return $this->matsh;
+        return $this->matche;
     }
 
-    public function setMatsh(?Match $matsh): self
+    public function setMatche(?Matche $matche): self
     {
-        $this->matsh = $matsh;
+        $this->matche = $matche;
 
         return $this;
     }
