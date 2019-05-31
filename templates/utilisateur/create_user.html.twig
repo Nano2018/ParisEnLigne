@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}page d'accueil!{% endblock %}
+
+{% block body %}
+    {% if create_user is defined and create_user %}
+        <div class="alert alert-dismissible alert-success">
+            <p>l'utilisateur a bien été créer </p>
+        </div>
+    {% endif %}
+    <div class="container">
+        <div class="alert alert-dismissible alert-success"> créer votre compte </div>
+        {{ form_start(formulaire) }}
+        {{ form_row(formulaire.name, {'attr':{'label': "nom"}}) }}
+        {{ form_row(formulaire.firstname, {'attr':{'label': "prénom"}}) }}
+        {{ form_row(formulaire.email, {'attr':{'label': "email"}}) }}
+        {{ form_row(formulaire.password, {'attr':{'label': "mot de passe"}}) }}
+        <input type="submit" class="btn btn-primary" value="connectez-vous">
+        {{ form_end(formulaire) }}
+    <div>
+{% endblock %}

@@ -22,12 +22,7 @@ class User
 
     /**
      *  @ORM\Column(type="string", length=255)
-     *  @Assert\Length(
-     *      min = 4,
-     *      max = 15,
-     *      minMessage = "le login est trop court {{ limit }} carcatere",
-     *      maxMessage = "le login est trop long!!"
-     * )
+     *
      */
     private $login;
 

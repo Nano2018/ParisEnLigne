@@ -3,12 +3,23 @@
 {% block title %}page d'accueil!{% endblock %}
 
 {% block body %}
-    {% if error is defined and error is not null %}
-        <p style="background: red;"> {{ error }} </p>
+    {% if message_send is defined and message_send %}
+        <div class="alert alert-success">
+            un émail vous a été envoyé veuillez le suivre pour rèinitiliser votre mot de passe
+        </div>
     {% endif %}
-    {{ form_start(formulaire) }}
-     {{ form_row(formulaire.login, {'attr':{'label': "login"}}) }}
-     {{ form_row(formulaire.password, {'attr':{'label': "password"}}) }}
-     <input type="submit" value="connexion">
-    {{ form_end(formulaire) }}
+    <div class="container">
+        {% if error is defined and error is not null %}
+            <p style="background: red;"> {{ error }} </p>
+        {% endif %}
+        {{ form_start(formulaire) }}
+        {{ form_row(formulaire.login, {'attr':{'label': "login"}}) }}
+        {{ form_row(formulaire.password, {'attr':{'label': "password"}}) }}
+        <div class="form-group">
+            <input type="submit" class="btn btn-primary" value="connectez-vous">
+            <a href="{{ path('create_user') }}"> créer un compte </a>
+            <a href="{{ path('forgot_password')}}" class="btn btn-warning"> forgot password ? </a>
+        <div>
+        {{ form_end(formulaire) }}
+    <div>
 {% endblock %}

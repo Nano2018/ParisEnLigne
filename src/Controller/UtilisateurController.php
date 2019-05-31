@@ -17,33 +17,51 @@ use App\Repository\UserRepository;
 use App\Repository\MatcheRepository;
 use App\Form\PariInformationsType;
 use Symfony\Component\HttpFoundation\Session\Session;
+use \ParagonIE\Halite\KeyFactory;
+use \ParagonIE\Halite\HiddenString;
+use \ParagonIE\Halite\Symmetric\Crypto;
+use \ParagonIE\Halite\Asymmetric\EncryptionPublicKey;
+use \ParagonIE\Halite\Cookie;
+use App\Service\MessageGenerator;
+use App\Entity\People;
+use App\Form\PeopleType;
+use Doctrine\Common\Persistence\ObjectManager;
+use \Exception;
 class UtilisateurController extends AbstractController
 {
-    /**
-     * @Route("/", name="home")
-     */
-    public function home(Request $request, UserRepository $repo)
-    {
-        $user = new User();
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
-            $data = $form->getData();
-            $user_test = $repo->findOneBy(['login'=> $data->getLogin(), 'password'=>$data->getPassword()]);
-            if($user_test !=null){
-                $request->getSession()->set('login',$user->getLogin());
-                return $this->redirectToRoute('menu');
-            }else{
-                return $this->render('home.html.twig', [
-                    'formulaire' => $form->createView(), 'error' => "login ou mot de passe incorrect",
-                ]); 
-            }
-        }
-        return $this->render('home.html.twig', [
-            'formulaire' => $form->createView(), 
-        ]); 
-    }
 
+     /**
+     * @Route("/forgot", name="forgot_password")
+     */
+    
+    
+
+
+    /**
+     * @Route("/create_user", name="create_user")
+     */
+    public function createUser(Request $request, ObjectManager $manager, UserRepository $repo){
+        /**
+         *cryptage des données 
+         *envoie de mail
+         */
+        $people = new People();
+        $form = $this->createForm(PeopleType::class, $people);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $user->setIsAdmin(false);
+            $manager->persist($user);
+            $manager->flush();
+            
+        return $this->redirectToRoute('home');
+        }
+
+        return $this->render('utilisateur/create_user.html.twig',[
+            'formulaire' => $form->createView()
+        ]);
+    }
     /**
      * @Route("/user/match_ouverts", name="match_ouverts")
      * @Route("/user/match_ouverts/{succ}", name="pari_success")
@@ -118,4 +136,43 @@ class UtilisateurController extends AbstractController
     public function menu(){
         return  $this->render('utilisateur/menuUser.html.twig');
     }
+
+    /**
+     * @Route("/confirm_pass", name="confirm")
+     */
+
+    public function confirm(Request $request){
+        $query = $request->query->all();
+        dump($query);
+        throw new Exception("je suiskn");
+    }
+
+    /**
+     * @Route("/{param}", name="home")
+     
+     */
+    public function home($param = null, Request $request, UserRepository $repo, MessageGenerator $message,\Swift_Mailer $mailer)
+    {
+        
+        $user = new User();
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $data = $form->getData();
+            $user_test = $repo->findOneBy(['login'=> $user->getLogin(), 'password'=>$user->getPassword()]);
+            if($user_test !=null){
+                $request->getSession()->set('login',$user->getLogin());
+                return $this->redirectToRoute('menu');
+            }else{
+                return $this->render('home.html.twig', [
+                    'formulaire' => $form->createView(), 'error' => "login ou mot de passe incorrect",
+                ]); 
+            }
+        }
+        return $this->render('home.html.twig', [
+            'formulaire' => $form->createView(), 
+            'message_send' => $param,
+        ]); 
+    }
+
 }
